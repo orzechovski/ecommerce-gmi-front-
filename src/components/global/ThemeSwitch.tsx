@@ -20,7 +20,12 @@ const ThemeSwitch: React.FC<ThemeSwitchProps> = ({ className }) => {
 
    return (
       isClient && (
-         <Button variant="secondary" className={cn(className)} onClick={() => setTheme(isDark ? 'light' : 'dark')}>
+         <Button
+            type="button"
+            variant="secondary"
+            className={cn(className)}
+            onClick={() => setTheme(isDark ? 'light' : 'dark')}
+         >
             {isDark ? <Sun size={20} strokeWidth={2} /> : <Moon size={20} strokeWidth={2} />}
          </Button>
       )
