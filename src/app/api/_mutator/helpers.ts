@@ -8,7 +8,7 @@ export interface AxiosErrorResponse {
     }
   }
 }
-export const handleAxiosError = (error: unknown) => {
+export const handleAxiosError = (error: AxiosError) => {
   const axiosError = error as AxiosError<AxiosErrorResponse>
 
   throw new Error(axiosError.response?.data?.message || 'Unknown error')

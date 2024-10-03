@@ -73,13 +73,13 @@ export interface LoginAuthDto {
 
 export interface RegisterAuthDto {
   /** Billing address ID */
-  billing_address_id: string;
+  billing_address_id?: string;
   /** User email address */
   email: string;
   /** First name of the user */
-  first_name: string;
+  first_name?: string;
   /** Last name of the user */
-  last_name: string;
+  last_name?: string;
   /** User password, minimum length 6 */
   password: string;
 }

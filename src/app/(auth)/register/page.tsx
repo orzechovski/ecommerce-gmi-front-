@@ -15,51 +15,54 @@ import { Send } from 'lucide-react'
 import Logo from '@/components/global/Logo'
 import useRedirectIfLogin from '@/hooks/useRedirectIfLogin'
 import { useRouter } from 'next/navigation'
+import { useAuthControllerRegister } from '@/app/api/generated/auth/auth'
 import Link from 'next/link'
 
-const formSchema = z.object({
-  email,
-  password: passwordSchema
-})
+const formSchema = z
+  .object({
+    email,
+    password: passwordSchema,
+    confirmPassword: passwordSchema
+  })
+  .superRefine(({ password, confirmPassword }, { addIssue }) => {
+    if (password !== confirmPassword) {
+      addIssue({
+        message: 'Passwords needs to be equal',
+        path: ['confirmPassword'],
+        code: z.ZodIssueCode.custom
+      })
+    }
+  })
 
 const Page = () => {
   const { push } = useRouter()
   useRedirectIfLogin()
+  const { mutate, isPending } = useAuthControllerRegister()
 
-  const { mutate: login, isPending } = useMutation<
-    void,
-    string,
-    { email: string; password: string }
-  >({
-    mutationFn: async ({ email, password }) => {
-      const res = await signIn('credentials', {
-        email,
-        password,
-        redirect: false
-      })
-      if (res?.error) {
-        throw new Error(res.error)
-      }
-    }
-  })
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       email: '',
-      password: ''
+      password: '',
+      confirmPassword: ''
     }
   })
 
   async function onSubmit(data: z.infer<typeof formSchema>) {
-    login(data, {
-      onSuccess: () => {
-        toast.success('Logged in successfully')
-        push('/')
+    mutate(
+      {
+        data
       },
-      onError: (error: any) => {
-        toast.error(error.message || 'An error occurred')
+      {
+        onSuccess: () => {
+          toast.success('Registered successfully')
+          push('/login')
+        },
+        onError: (error: any) => {
+          toast.error(error?.message || 'An error occurred')
+        }
       }
-    })
+    )
   }
 
   return (
@@ -71,30 +74,36 @@ const Page = () => {
         <section className="flex flex-col items-center justify-center gap-2">
           <div className="flex gap-4 items-center">
             <h1 className="text-3xl font-bold relative z-20 bg-clip-text text-transparent bg-gradient-to-b from-neutral-400 dark:from-neutral-200 to-neutral-600 dark:to-neutral-500">
-              Sign in
+              Sign up
             </h1>
             <Logo />
           </div>
-          <p className="text-gray-400">Sign in to your account</p>
+          <p className="text-gray-400">Sign up to access all features</p>
         </section>
         <Email />
         <Password />
+        <Password
+          name="confirmPassword"
+          label="Confirm password"
+          description="Confirm your password"
+          placeholder="Confirm password"
+        />
         <Button
           type="submit"
           className="mt-6 text-base flex items-center gap-2"
         >
-          Sign in
+          Sign up
           <IconLoad isLoading={isPending}>
             <Send size={18} className="text-white" />
           </IconLoad>
         </Button>
         <div className="flex items-center gap-1">
-          <p>Already have an account?</p>
+          <p>Don't have an account?</p>
           <Link
-            href="/register"
+            href="/login"
             className="text-indigo-500 hover:underline hover:text-indigo-400 transition-all"
           >
-            Sign up
+            Sign in
           </Link>
         </div>
       </form>
