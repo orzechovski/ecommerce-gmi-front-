@@ -1,11 +1,10 @@
-import Logout from '@/components/global/Logout'
-import ThemeSwitch from '@/components/global/ThemeSwitch'
+import Menu from '@/components/menu/Menu'
+import ProductsList from '@/components/products/ProductsList'
 
 export default function Home() {
   return (
-    <main className="flex items-center justify-center h-full">
-      <ThemeSwitch />
-      <Logout />
-    </main>
+    <Menu containerClassName="p-8">
+      <ProductsList />
+    </Menu>
   )
 }

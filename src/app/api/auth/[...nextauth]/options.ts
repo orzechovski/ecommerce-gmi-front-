@@ -2,6 +2,7 @@ import type { NextAuthOptions, Session } from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import { jwtDecode } from 'jwt-decode'
 import { authControllerLogin } from '../../generated/auth/auth'
+import { LoginResposne } from '../../../../../types/next-auth'
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -29,11 +30,7 @@ export const authOptions: NextAuthOptions = {
             throw new Error('Wrong email or password')
           }
           const decodedData = jwtDecode(res?.access_token)
-          return decodedData as {
-            id: string
-            email: string
-            exp: number
-          }
+          return decodedData as LoginResposne
         } catch (error) {
           console.error(error)
           throw new Error('Wrong email or password')
@@ -43,8 +40,7 @@ export const authOptions: NextAuthOptions = {
   ],
   callbacks: {
     async jwt({ token, user }) {
-      const exp_token = token.exp as number
-      const data = { ...token, ...user, exp_token }
+      const data = { ...token, ...user }
 
       return data
     },
@@ -52,8 +48,6 @@ export const authOptions: NextAuthOptions = {
       return {
         ...session,
         ...token
-        // accessToken: token.accessToken as string,
-        // refreshToken: token.refreshToken as string,
       }
     }
   },
