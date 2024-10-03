@@ -12,11 +12,16 @@ const ProductsList: React.FC<ProductsListProps> = async ({ className }) => {
   const resposne = data as unknown as CreateProductDto[] | null
   if (!resposne) return null
 
+  const arr = Array.from({ length: 40 }, () => resposne).flat()
+
   return (
     <ul
-      className={cn('flex flex-wrap gap-4 overflow-y-auto h-full', className)}
+      className={cn(
+        'flex flex-wrap gap-4 overflow-y-auto h-full flex-grow',
+        className
+      )}
     >
-      {resposne?.map((product, index) => (
+      {arr?.map((product, index) => (
         <Product key={index} {...product} />
       ))}
     </ul>
