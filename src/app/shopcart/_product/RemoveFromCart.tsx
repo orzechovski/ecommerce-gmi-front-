@@ -6,6 +6,7 @@ import { Trash2 } from 'lucide-react'
 import { useSession } from 'next-auth/react'
 import { toast } from 'sonner'
 import {
+  getCartControllerGetCartItemCountQueryKey,
   getCartControllerGetCartQueryKey,
   useCartControllerRemoveFromCart
 } from '@/app/api/generated/cart/cart'
@@ -23,6 +24,10 @@ const RemoveFromCart: React.FC<RemoveFromCartProps> = ({
   const { data } = useSession()
   const customerId = data?.id ?? ''
   const queryKeys = [...getCartControllerGetCartQueryKey(customerId)]
+  const cartCountQueryKeys = [
+    ...getCartControllerGetCartItemCountQueryKey(customerId)
+  ]
+
   const { mutate, isPending } = useCartControllerRemoveFromCart()
 
   const handleClick = () => {
@@ -38,8 +43,9 @@ const RemoveFromCart: React.FC<RemoveFromCartProps> = ({
 
         {
           onSuccess: () => {
-            toast.success('Product added to cart')
+            toast.info('Product removed from cart')
             invalidate(queryKeys)
+            invalidate(cartCountQueryKeys)
           },
           onError: (error: any) => {
             toast.error(error.message || 'An error occurred')

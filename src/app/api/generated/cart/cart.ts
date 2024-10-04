@@ -234,3 +234,90 @@ export function useCartControllerGetCart<TData = Awaited<ReturnType<typeof cartC
 
 
 
+/**
+ * @summary Get total item count in cart
+ */
+export const cartControllerGetCartItemCount = (
+    customerId: string,
+ options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
+) => {
+      
+      
+      return customInstance<void>(
+      {url: `/api/cart/${customerId}/item-count`, method: 'GET', signal
+    },
+      options);
+    }
+  
+
+export const getCartControllerGetCartItemCountQueryKey = (customerId: string,) => {
+    return [`/api/cart/${customerId}/item-count`] as const;
+    }
+
+    
+export const getCartControllerGetCartItemCountQueryOptions = <TData = Awaited<ReturnType<typeof cartControllerGetCartItemCount>>, TError = ErrorType<void>>(customerId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof cartControllerGetCartItemCount>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getCartControllerGetCartItemCountQueryKey(customerId);
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof cartControllerGetCartItemCount>>> = ({ signal }) => cartControllerGetCartItemCount(customerId, requestOptions, signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, enabled: !!(customerId), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof cartControllerGetCartItemCount>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type CartControllerGetCartItemCountQueryResult = NonNullable<Awaited<ReturnType<typeof cartControllerGetCartItemCount>>>
+export type CartControllerGetCartItemCountQueryError = ErrorType<void>
+
+
+export function useCartControllerGetCartItemCount<TData = Awaited<ReturnType<typeof cartControllerGetCartItemCount>>, TError = ErrorType<void>>(
+ customerId: string, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof cartControllerGetCartItemCount>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof cartControllerGetCartItemCount>>,
+          TError,
+          TData
+        > , 'initialData'
+      >, request?: SecondParameter<typeof customInstance>}
+
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: QueryKey }
+export function useCartControllerGetCartItemCount<TData = Awaited<ReturnType<typeof cartControllerGetCartItemCount>>, TError = ErrorType<void>>(
+ customerId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof cartControllerGetCartItemCount>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof cartControllerGetCartItemCount>>,
+          TError,
+          TData
+        > , 'initialData'
+      >, request?: SecondParameter<typeof customInstance>}
+
+  ):  UseQueryResult<TData, TError> & { queryKey: QueryKey }
+export function useCartControllerGetCartItemCount<TData = Awaited<ReturnType<typeof cartControllerGetCartItemCount>>, TError = ErrorType<void>>(
+ customerId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof cartControllerGetCartItemCount>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+
+  ):  UseQueryResult<TData, TError> & { queryKey: QueryKey }
+/**
+ * @summary Get total item count in cart
+ */
+
+export function useCartControllerGetCartItemCount<TData = Awaited<ReturnType<typeof cartControllerGetCartItemCount>>, TError = ErrorType<void>>(
+ customerId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof cartControllerGetCartItemCount>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+
+  ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getCartControllerGetCartItemCountQueryOptions(customerId,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
+}
+
+
+

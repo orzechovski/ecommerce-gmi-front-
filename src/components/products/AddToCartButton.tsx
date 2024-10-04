@@ -1,11 +1,15 @@
 'use client'
 import { cn } from '@/lib/utils'
 import { Button } from '../ui/button'
-import { useCartControllerAddToCart } from '@/app/api/generated/cart/cart'
+import {
+  getCartControllerGetCartItemCountQueryKey,
+  useCartControllerAddToCart
+} from '@/app/api/generated/cart/cart'
 import { useSession } from 'next-auth/react'
 import IconLoad from '../global/IconLoad'
 import { toast } from 'sonner'
 import { ShoppingCart } from 'lucide-react'
+import useInvalidate from '@/hooks/useInvalidate'
 
 type AddToCartButtonProps = {
   className?: string
@@ -13,9 +17,12 @@ type AddToCartButtonProps = {
 }
 
 const AddToCartButton: React.FC<AddToCartButtonProps> = ({ className, id }) => {
+  const invalidate = useInvalidate()
   const { data } = useSession()
-  const customerId = data?.id
+  const customerId = data?.id ?? ''
   const { mutate, isPending } = useCartControllerAddToCart()
+  const queryKeys = [...getCartControllerGetCartItemCountQueryKey(customerId)]
+
   const handleClick = () => {
     customerId &&
       mutate(
@@ -30,6 +37,7 @@ const AddToCartButton: React.FC<AddToCartButtonProps> = ({ className, id }) => {
         {
           onSuccess: () => {
             toast.success('Product added to cart')
+            invalidate(queryKeys)
           },
           onError: (error: any) => {
             toast.error(error.message || 'An error occurred')

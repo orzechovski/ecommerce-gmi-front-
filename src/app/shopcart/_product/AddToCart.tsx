@@ -1,4 +1,5 @@
 import {
+  getCartControllerGetCartItemCountQueryKey,
   getCartControllerGetCartQueryKey,
   useCartControllerAddToCart
 } from '@/app/api/generated/cart/cart'
@@ -21,6 +22,10 @@ const AddToCart: React.FC<AddToCartProps> = ({ className, productId }) => {
   const { data } = useSession()
   const customerId = data?.id ?? ''
   const queryKeys = [...getCartControllerGetCartQueryKey(customerId)]
+  const cartCountQueryKeys = [
+    ...getCartControllerGetCartItemCountQueryKey(customerId)
+  ]
+
   const { mutate, isPending } = useCartControllerAddToCart()
   const handleClick = () => {
     customerId &&
@@ -37,6 +42,7 @@ const AddToCart: React.FC<AddToCartProps> = ({ className, productId }) => {
           onSuccess: () => {
             toast.success('Product added to cart')
             invalidate(queryKeys)
+            invalidate(cartCountQueryKeys)
           },
           onError: (error: any) => {
             toast.error(error.message || 'An error occurred')

@@ -255,7 +255,7 @@ export const MultipleSidebarLink = ({
 }
 
 export const SidebarLink = ({
-  link: { href, icon, label, active },
+  link: { href, icon, label, active, count },
   className,
   ...props
 }: {
@@ -275,7 +275,18 @@ export const SidebarLink = ({
       )}
       {...props}
     >
-      <Icon name={icon} strokeWidth={active ? 2.6 : 1.6} className="min-w-4" />
+      <div className="relative">
+        <Icon
+          name={icon}
+          strokeWidth={active ? 2.6 : 1.6}
+          className="min-w-4"
+        />
+        {count && (
+          <span className="absolute -top-2 -right-2 bg-primary text-white text-xs font-semibold w-4 h-4 flex items-center justify-center rounded-full">
+            {count}
+          </span>
+        )}
+      </div>
 
       <motion.span
         animate={{

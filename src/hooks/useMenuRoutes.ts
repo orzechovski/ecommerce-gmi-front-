@@ -1,4 +1,6 @@
+import { useCartControllerGetCartItemCount } from '@/app/api/generated/cart/cart'
 import { IconName } from '@/components/global/Icon'
+import { useSession } from 'next-auth/react'
 import { usePathname } from 'next/navigation'
 import { useMemo } from 'react'
 
@@ -6,6 +8,7 @@ export type SingleRouteType = {
   label: string
   href: string
   icon: IconName
+  count?: number
   active?: boolean
   onClick?: () => void
 }
@@ -20,6 +23,12 @@ export type MenuRoutesType = {
 }
 
 export const useMenuRoutes = () => {
+  const { data } = useSession()
+  const customerId = data?.id
+
+  const { data: cartCount } = useCartControllerGetCartItemCount(
+    customerId ?? ''
+  )
   const pathname = usePathname()
 
   const routes: MenuRoutesType[] = useMemo(
@@ -34,10 +43,11 @@ export const useMenuRoutes = () => {
         label: 'Shop cart',
         href: '/shopcart',
         icon: 'shopping-cart',
-        active: pathname.includes('/shopcart')
+        active: pathname.includes('/shopcart'),
+        count: cartCount
       }
     ],
-    [pathname]
+    [pathname, cartCount]
   )
   return routes
 }
