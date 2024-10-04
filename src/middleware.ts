@@ -6,6 +6,11 @@ export default withAuth(
     if (!request.nextauth.token) {
       return NextResponse.rewrite(new URL('/login', request.url).toString())
     }
+    if (request.nextUrl.pathname.startsWith('/admin')) {
+      if (request.nextauth.token.role !== 'admin') {
+        return NextResponse.rewrite(new URL('/', request.url).toString())
+      }
+    }
   },
   {
     callbacks: { authorized: ({ token }) => !!token }

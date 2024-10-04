@@ -255,7 +255,7 @@ export const MultipleSidebarLink = ({
 }
 
 export const SidebarLink = ({
-  link: { href, icon, label, active, count },
+  link: { href, icon, label, active, count, disabled = false },
   className,
   ...props
 }: {
@@ -264,6 +264,7 @@ export const SidebarLink = ({
   props?: LinkProps
 }) => {
   const { open, animate } = useSidebar()
+  if (disabled) return null
   return (
     <Link
       href={href}

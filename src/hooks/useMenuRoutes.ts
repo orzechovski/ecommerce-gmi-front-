@@ -10,6 +10,7 @@ export type SingleRouteType = {
   icon: IconName
   count?: number
   active?: boolean
+  disabled?: boolean
   onClick?: () => void
 }
 
@@ -27,7 +28,13 @@ export const useMenuRoutes = () => {
   const customerId = data?.id
 
   const { data: cartCount } = useCartControllerGetCartItemCount(
-    customerId ?? ''
+    customerId ?? '',
+    {
+      query: {
+        enabled: !!customerId,
+        retry: false
+      }
+    }
   )
   const pathname = usePathname()
 
@@ -37,6 +44,7 @@ export const useMenuRoutes = () => {
         label: 'Products',
         href: '/',
         icon: 'app-window',
+
         active: pathname === '/'
       },
       {
@@ -51,9 +59,16 @@ export const useMenuRoutes = () => {
         href: '/orders',
         icon: 'package-check',
         active: pathname.includes('/orders')
+      },
+      {
+        label: 'Admin',
+        href: '/admin',
+        icon: 'shield',
+        disabled: data?.role === 'USER',
+        active: pathname.includes('/admin')
       }
     ],
-    [pathname, cartCount]
+    [pathname, cartCount, data]
   )
   return routes
 }

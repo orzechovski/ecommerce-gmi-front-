@@ -13,9 +13,9 @@ type QueryProviderProps = {
 const queryClient = new QueryClient({
   queryCache: new QueryCache({
     onError: (error) => {
-      toast.error('Błąd 💔', {
-        description: error.message
-      })
+      // toast.error('Błąd 💔', {
+      //   description: error.message
+      // })
     }
   })
 })
