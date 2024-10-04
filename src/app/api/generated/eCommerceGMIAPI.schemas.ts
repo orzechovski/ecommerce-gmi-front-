@@ -84,6 +84,27 @@ export interface RegisterAuthDto {
   password: string;
 }
 
+export interface OrderDto {
+  /** Date when the order was created */
+  createdAt: string;
+  /** ID of the customer who placed the order */
+  customer_id: string;
+  /** Unique identifier for the order */
+  id: string;
+  /** List of items included in the order */
+  items: CartItemDto[];
+  /** Current payment status of the order */
+  payment_status: string;
+  /** Shipping address for the order */
+  shipping_address: string;
+  /** Current status of the order */
+  status: string;
+  /** Total price of the order */
+  total_price: number;
+  /** Date when the order was last updated */
+  updatedAt: string;
+}
+
 export interface CreateOrderDto {
   /** ID of the customer */
   customerId: string;

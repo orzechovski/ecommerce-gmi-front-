@@ -22,7 +22,8 @@ import type {
   UseQueryResult
 } from '@tanstack/react-query'
 import type {
-  CreateOrderDto
+  CreateOrderDto,
+  OrderDto
 } from '../eCommerceGMIAPI.schemas'
 import { customInstance } from '../../_mutator/axios-instance';
 import type { ErrorType } from '../../_mutator/axios-instance';
@@ -184,7 +185,7 @@ export const ordersControllerGetOrders = (
 ) => {
       
       
-      return customInstance<void>(
+      return customInstance<OrderDto[]>(
       {url: `/api/orders/${id}`, method: 'GET', signal
     },
       options);

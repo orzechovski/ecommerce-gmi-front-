@@ -45,6 +45,12 @@ export const useMenuRoutes = () => {
         icon: 'shopping-cart',
         active: pathname.includes('/shopcart'),
         count: cartCount
+      },
+      {
+        label: 'Orders',
+        href: '/orders',
+        icon: 'package-check',
+        active: pathname.includes('/orders')
       }
     ],
     [pathname, cartCount]
