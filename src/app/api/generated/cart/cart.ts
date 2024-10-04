@@ -23,6 +23,7 @@ import type {
 } from '@tanstack/react-query'
 import type {
   AddToCartDto,
+  CartDto,
   RemoveFromCartDto
 } from '../eCommerceGMIAPI.schemas'
 import { customInstance } from '../../_mutator/axios-instance';
@@ -155,7 +156,7 @@ export const cartControllerGetCart = (
 ) => {
       
       
-      return customInstance<void>(
+      return customInstance<CartDto>(
       {url: `/api/cart/${customerId}`, method: 'GET', signal
     },
       options);

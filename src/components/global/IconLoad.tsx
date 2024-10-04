@@ -7,12 +7,14 @@ type IconLoadProps = {
   className?: string
   isLoading: boolean
   children?: React.ReactNode
+  iconSize?: number
 }
 
 const IconLoad: React.FC<IconLoadProps> = ({
   className,
   isLoading,
-  children
+  children,
+  iconSize = 18
 }) => {
   return (
     <AnimatePresence mode="wait">
@@ -24,7 +26,7 @@ const IconLoad: React.FC<IconLoadProps> = ({
         transition={{ duration: 0.1, ease: 'easeInOut' }}
       >
         {isLoading ? (
-          <Loader className={cn('text-white', className)} size={18} />
+          <Loader className={cn('text-white', className)} size={iconSize} />
         ) : (
           children
         )}

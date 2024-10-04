@@ -23,6 +23,7 @@ import type {
 } from '@tanstack/react-query'
 import type {
   CreateProductDto,
+  ProductDto,
   UpdateProductDto
 } from '../eCommerceGMIAPI.schemas'
 import { customInstance } from '../../_mutator/axios-instance';
@@ -98,7 +99,7 @@ export const productsControllerFindAll = (
 ) => {
       
       
-      return customInstance<void>(
+      return customInstance<ProductDto[]>(
       {url: `/api/products`, method: 'GET', signal
     },
       options);

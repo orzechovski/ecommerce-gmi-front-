@@ -29,8 +29,11 @@ export const authOptions: NextAuthOptions = {
           if (!res?.access_token) {
             throw new Error('Wrong email or password')
           }
-          const decodedData = jwtDecode(res?.access_token)
-          return decodedData as LoginResposne
+          const decodedData = jwtDecode<LoginResposne>(res?.access_token)
+          return {
+            ...decodedData,
+            accessToken: res?.access_token
+          }
         } catch (error) {
           console.error(error)
           throw new Error('Wrong email or password')

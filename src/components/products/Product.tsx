@@ -1,21 +1,23 @@
-import { CreateProductDto } from '@/app/api/generated/eCommerceGMIAPI.schemas'
 import { cn } from '@/lib/utils'
 import Icon from '../global/Icon'
+import AddToCartButton from './AddToCartButton'
+import { ProductDto } from '@/app/api/generated/eCommerceGMIAPI.schemas'
 
-type ProductProps = {
+type ProductPropsType = {
   className?: string
-} & CreateProductDto
+} & ProductDto
 
-const Product: React.FC<ProductProps> = ({
+const Product: React.FC<ProductPropsType> = ({
   className,
   price,
   stock,
-  title
+  title,
+  id
 }) => {
   return (
     <li
       className={cn(
-        'border border-border/30 dark:border-border rounded-xl p-3 min-w-40 flex-grow bg-gray-100 dark:bg-background flex flex-col gap-1 max-w-44 max-h-64',
+        'border border-border/30 dark:border-border rounded-xl p-3 min-w-40 flex-grow bg-gray-100 dark:bg-background flex flex-col gap-1 max-w-44 max-h-72',
         className
       )}
     >
@@ -26,7 +28,10 @@ const Product: React.FC<ProductProps> = ({
       <div className="text-sm p-1 flex flex-col mt-auto">
         <h3 className="font-medium">{title}</h3>
         <p className="text-xs text-muted-foreground">Stock: {stock}</p>
-        <p className="font-semibold mt-2"> {price} $</p>
+        <div className="mt-2 flex item-end justify-between">
+          <p className="font-semibold mt-2"> {price} $</p>
+          <AddToCartButton id={id} />
+        </div>
       </div>
     </li>
   )

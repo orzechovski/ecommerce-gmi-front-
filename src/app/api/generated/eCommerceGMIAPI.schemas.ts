@@ -89,6 +89,179 @@ export interface CreateOrderDto {
   customerId: string;
 }
 
+/**
+ * Can be a string, number, or object (JSON)
+ * @nullable
+ */
+export type CartDtoPaymentSession = { [key: string]: unknown } | null;
+
+/**
+ * Can be any valid JSON value
+ * @nullable
+ */
+export type CartDtoMetadata = { [key: string]: unknown } | null;
+
+/**
+ * Can be any valid JSON value
+ * @nullable
+ */
+export type CartDtoContext = { [key: string]: unknown } | null;
+
+export interface CartDto {
+  /** @nullable */
+  completed_at: string | null;
+  /**
+   * Can be any valid JSON value
+   * @nullable
+   */
+  context: CartDtoContext;
+  createdAt: string;
+  customer_id: string;
+  /** @nullable */
+  deletedAt: string | null;
+  email: string;
+  id: string;
+  /** @nullable */
+  idempotency_key: string | null;
+  items: CartItemDto[];
+  /**
+   * Can be any valid JSON value
+   * @nullable
+   */
+  metadata: CartDtoMetadata;
+  /** @nullable */
+  payment_authorized_at: string | null;
+  /** @nullable */
+  payment_id: string | null;
+  /**
+   * Can be a string, number, or object (JSON)
+   * @nullable
+   */
+  payment_session: CartDtoPaymentSession;
+  type: string;
+  updatedAt: string;
+}
+
+/**
+ * Additional metadata for the product
+ * @nullable
+ */
+export type ProductDtoMetadata = { [key: string]: unknown } | null;
+
+export interface ProductDto {
+  /**
+   * Collection ID the product belongs to
+   * @nullable
+   */
+  collection_id?: string | null;
+  /** Creation date of the product */
+  createdAt: string;
+  /**
+   * Deletion date of the product, if deleted
+   * @nullable
+   */
+  deletedAt: string | null;
+  /** Description of the product */
+  description: string;
+  /** Is the product discountable? */
+  discountable?: boolean;
+  /**
+   * External ID of the product
+   * @nullable
+   */
+  external_id?: string | null;
+  /**
+   * Height of the product
+   * @nullable
+   */
+  height?: number | null;
+  /**
+   * HS Code of the product
+   * @nullable
+   */
+  hs_code?: string | null;
+  /** ID of the product */
+  id: string;
+  /** Is this product a gift card? */
+  is_giftcard?: boolean;
+  /**
+   * Length of the product
+   * @nullable
+   */
+  length?: number | null;
+  /**
+   * Material used in the product
+   * @nullable
+   */
+  material?: string | null;
+  /**
+   * Additional metadata for the product
+   * @nullable
+   */
+  metadata?: ProductDtoMetadata;
+  /**
+   * MID code of the product
+   * @nullable
+   */
+  mid_code?: string | null;
+  /**
+   * Country of origin
+   * @nullable
+   */
+  origin_country?: string | null;
+  /** Price of the product */
+  price: number;
+  /**
+   * Profile ID associated with the product
+   * @nullable
+   */
+  profile_id?: string | null;
+  /** Status of the product */
+  status?: string;
+  /** Stock available for the product */
+  stock: number;
+  /**
+   * Subtitle of the product
+   * @nullable
+   */
+  subtitle?: string | null;
+  /**
+   * Thumbnail URL
+   * @nullable
+   */
+  thumbnail?: string | null;
+  /** Title of the product */
+  title: string;
+  /**
+   * Product type ID
+   * @nullable
+   */
+  type_id?: string | null;
+  /** Last update date of the product */
+  updatedAt: string;
+  /**
+   * Weight of the product
+   * @nullable
+   */
+  weight?: number | null;
+  /**
+   * Width of the product
+   * @nullable
+   */
+  width?: number | null;
+}
+
+export interface CartItemDto {
+  /** ID of the cart item */
+  cartId: string;
+  createdAt: string;
+  id: string;
+  product: ProductDto;
+  productId: string;
+  quantity: number;
+  updatedAt: string;
+}
+
 export interface RemoveFromCartDto {
   /** ID of the customer */
   customerId: string;
