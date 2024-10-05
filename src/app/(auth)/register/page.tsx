@@ -3,7 +3,14 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import * as z from 'zod'
 import { Button } from '@/components/ui/button'
-import { Form } from '@/components/ui/form'
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel
+} from '@/components/ui/form'
 import { signIn } from 'next-auth/react'
 import { toast } from 'sonner'
 import { useMutation } from '@tanstack/react-query'
@@ -17,12 +24,14 @@ import useRedirectIfLogin from '@/hooks/useRedirectIfLogin'
 import { useRouter } from 'next/navigation'
 import { useAuthControllerRegister } from '@/app/api/generated/auth/auth'
 import Link from 'next/link'
+import { Checkbox } from '@/components/ui/checkbox'
 
 const formSchema = z
   .object({
     email,
     password: passwordSchema,
-    confirmPassword: passwordSchema
+    confirmPassword: passwordSchema,
+    adminSecretKey: z.string().optional()
   })
   .superRefine(({ password, confirmPassword }, { addIssue }) => {
     if (password !== confirmPassword) {
@@ -44,7 +53,8 @@ const Page = () => {
     defaultValues: {
       email: '',
       password: '',
-      confirmPassword: ''
+      confirmPassword: '',
+      adminSecretKey: ''
     }
   })
 
@@ -69,7 +79,7 @@ const Page = () => {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="flex flex-col gap-6 min-w-[400px] sm:min-w-[500px] max-w-xl bg-background/60  dark:bg-background/30 backdrop-blur-sm p-8 sm:p-12 rounded-xl border border-border/20 dark:border-border/80 z-50"
+        className="flex flex-col gap-4 min-w-[400px] sm:min-w-[500px] max-w-xl bg-background/60  dark:bg-background/30 backdrop-blur-sm p-8 sm:p-12 rounded-xl border border-border/20 dark:border-border/80 z-50"
       >
         <section className="flex flex-col items-center justify-center gap-2">
           <div className="flex gap-4 items-center">
@@ -87,6 +97,31 @@ const Page = () => {
           label="Confirm password"
           description="Confirm your password"
           placeholder="Confirm password"
+        />
+        <FormField
+          control={form.control}
+          name="adminSecretKey"
+          render={({ field }) => (
+            <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
+              <FormControl>
+                <Checkbox
+                  checked={field.value !== ''}
+                  onCheckedChange={(checked) => {
+                    form.setValue('adminSecretKey', checked ? 'password' : '')
+                  }}
+                />
+              </FormControl>
+              <div className="space-y-1 leading-none">
+                <FormLabel>
+                  Become an admin
+                  <span className="text-xs text-gray-400 ml-1">(optional)</span>
+                </FormLabel>
+                <FormDescription>
+                  With one click you can become an admin and access all features
+                </FormDescription>
+              </div>
+            </FormItem>
+          )}
         />
         <Button
           type="submit"
