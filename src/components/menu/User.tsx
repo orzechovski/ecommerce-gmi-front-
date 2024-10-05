@@ -3,7 +3,7 @@ import { cn } from '@/lib/utils'
 import { useSession } from 'next-auth/react'
 import { motion } from 'framer-motion'
 import Icon from '../global/Icon'
-import CountdownTimer from '../global/CountDowntTimer'
+// import CountdownTimer from '../global/CountDowntTimer'
 
 type UserProps = {
   className?: string
@@ -33,7 +33,7 @@ const User: React.FC<UserProps> = ({ className, open }) => {
           </motion.span>
         )}
       </div>
-      {open && (
+      {/* {open && (
         <motion.span
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -45,7 +45,7 @@ const User: React.FC<UserProps> = ({ className, open }) => {
             <CountdownTimer className="font-semibold" exp={data.exp} />
           </div>
         </motion.span>
-      )}
+      )} */}
     </section>
   )
 }
